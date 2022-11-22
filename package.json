@@ -1,5 +1,5 @@
 {
-  "name": "hrmscorefunction",
+  "name": "hrmscorefunctionv2",
   "version": "0.1.34",
   "description": "Ini adalah kumpulan beberapa lib untuk hrms\r # Setup : \r ```\r npm i hrms_corefunction\r ```",
   "main": "index.js",
@@ -19,12 +19,12 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agustriadji/hrmscorefunction.git"
+    "url": "git+https://github.com/isi-hrms/core-function.git"
   },
-  "author": "agustriadji",
+  "author": "hrms_dev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/agustriadji/hrmscorefunction/issues"
+    "url": "https://github.com/isi-hrms/core-function/issues"
   },
-  "homepage": "https://github.com/agustriadji/hrmscorefunction#readme"
+  "homepage": "https://github.com/isi-hrms/core-function#readme"
 }
