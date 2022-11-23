@@ -1,7 +1,6 @@
 const mysql 	= require('mysql2');
 const database 	= require('../config').mysql;
 var ip = require("ip");
-const connectionClass = require('./connection.class')
 
 const ipList = ['10.129.1.12', '10.129.1.18', '10.129.1.14','192.168.1.12'];
 const passList = ['asdf1234*', 'P@ss1234**'];
@@ -30,24 +29,22 @@ if (ipIndex === 0) {
 /**
  * create connection to mysql database
  */
-// const connection = mysql.createConnection({
-// 	host 				: database.host,
-// 	port				: database.port,
-// 	user 				: database.user,
-// 	password 			: database.password,
-// 	database 			: database.database,
-// 	multipleStatements 	: true
-// });
+const connection = mysql.createConnection({
+	host 				: database.host,
+	port				: database.port,
+	user 				: database.user,
+	password 			: database.password,
+	database 			: database.database,
+	multipleStatements 	: true
+});
 
 
-// connection.connect(err => {
+connection.connect(err => {
 	
-// 	if(err) return console.log(`${err} mysql error connection`);
+	if(err) return console.log(`${err} mysql error connection`);
 
-// 	const connect = connection.config;
-// 	return console.log(`mysql database success connect to host ${connect.host} and table ${connect.database}`);
-// });
-const connection = new connectionClass(database.host, database.port, database.user, database.password, database.database)
-connection.connectToDB();
+	const connect = connection.config;
+	return console.log(`mysql database success connect to host ${connect.host} and table ${connect.database}`);
+});
 
 module.exports = connection;
