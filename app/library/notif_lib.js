@@ -48,10 +48,10 @@ module.exports = async (data, callback) => {
                     
                     return next(null, {
                         ...val,
-                        __check_su: _check_su[0],
-                        __supervisorx: _supervisorx[0],
-                        __emp_x: _emp_x[0],
-                        __hrx: _hrx[0],
+                        __check_su: _check_su,
+                        __supervisorx: _supervisorx,
+                        __emp_x: _emp_x,
+                        __hrx: _hrx,
                         // __adminx: _adminx[0],
                         __subx: [],
                     });
