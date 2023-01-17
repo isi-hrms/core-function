@@ -31,10 +31,11 @@ module.exports = async (data, callback) => {
                         ...data
                     };
 
-                    const _check_su = await database.query3(`select  * from  view_nonactive_login where employee_id  =  '${val._employee_id}'  and lower(role_name) =   'superuser'  `);
-                    const _supervisorx = await database.query3(`select * from emp_supervisor where employee_id =  '${val._employee_id}' `);
-                    const _emp_x = await database.query3(`select * from view_nonactive_login where employee_id  =   '${val._employee_id}' and (lower(role_name) = 'regular employee user' or  lower(role_name) = 'user') `);
-                    const _hrx =  await database.query3(`select employee_id from  ldap, role where ldap.role_id = role.role_id and (lower(role.role_name) like '%human%' or  '%human resource%' or '%hr%')`);
+                    
+                    // const _check_su = await database.Promise.query3(`select  * from  view_nonactive_login where employee_id  =  '${val._employee_id}'  and lower(role_name) =   'superuser'  `);
+                    // const _supervisorx = await database.query3(`select * from emp_supervisor where employee_id =  '${val._employee_id}' `);
+                    // const _emp_x = await database.query3(`select * from view_nonactive_login where employee_id  =   '${val._employee_id}' and (lower(role_name) = 'regular employee user' or  lower(role_name) = 'user') `);
+                    // const _hrx =  await database.query3(`select employee_id from  ldap, role where ldap.role_id = role.role_id and (lower(role.role_name) like '%human%' or  '%human resource%' or '%hr%')`);
                     // const _adminx =  await database.promise().query(`SELECT T1.employee_id
                     //                                                 FROM ldap T1
                     //                                                 INNER JOIN \`role\` T2
@@ -45,16 +46,37 @@ module.exports = async (data, callback) => {
                     //                                                 AND lower(T2.role_name) NOT LIKE '%administrator%'`);
                     //const _subx = await database.promise().query(`select subordinate from emp_subordinate where employee_id = '${val._employee_id}'`);
                     //const _subx = val._ids == undefined ? [] : await database.promise().query(`select swap_with from att_swap_shift where employee_id = '${val._employee_id}' and swap_id = (select request_id from att_schedule_request where employee_id='${val._employee_id}' and id = ${val._ids} and type_id = 6 order by id desc limit 1 )`);
-                    
-                    return next(null, {
-                        ...val,
-                        __check_su: _check_su,
-                        __supervisorx: _supervisorx,
-                        __emp_x: _emp_x,
-                        __hrx: _hrx,
-                        // __adminx: _adminx[0],
-                        __subx: [],
-                    });
+                    database.query (
+                        `select  * from  view_nonactive_login where employee_id  =  '${val._employee_id}'  and lower(role_name) =   'superuser'  ;
+                        select * from emp_supervisor where employee_id =  '${val._employee_id}';
+                        select * from view_nonactive_login where employee_id  =   '${val._employee_id}' and (lower(role_name) = 'regular employee user' or  lower(role_name) = 'user') ;
+                        select employee_id from  ldap, role where ldap.role_id = role.role_id and (lower(role.role_name) like '%human%' or  '%human resource%' or '%hr%');`,
+                        // [data.idReq],
+                        (err, res) => {
+                            // return 
+                            console.log(err, res, 353535)
+                            if (err) return next(true, 500);
+
+                            return next(null,  {
+                                ...val,
+                                __check_su: res[0],
+                                __supervisorx: res[1],
+                                __emp_x: res[2],
+                                __hrx: res[3],
+                                // __adminx: _adminx[0],
+                                __subx: [],
+                            })    
+                    })
+                    // console.log(_check_su, _supervisorx, _emp_x, _hrx, val._employee_id, 48, )
+                    // return next(null, {
+                    //     ...val,
+                    //     __check_su: _check_su,
+                    //     __supervisorx: _supervisorx,
+                    //     __emp_x: _emp_x,
+                    //     __hrx: _hrx,
+                    //     // __adminx: _adminx[0],
+                    //     __subx: [],
+                    // });
                 })();
             },
             (value, next) => {
