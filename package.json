@@ -1,6 +1,6 @@
 {
   "name": "@isi-hrms/hrmscorefunction",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "description": "Ini adalah kumpulan beberapa lib untuk hrms\r # Setup : \r ```\r npm i hrms_corefunction\r ```",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "@isi-hrms/hrmscorefunction": "^0.1.36",
     "async": "^3.2.0",
     "axios": "^0.21.1",
+    "dotenv": "^16.0.3",
     "ip": "^1.1.5",
     "moment": "^2.27.0",
     "mysql2": "^2.1.0"

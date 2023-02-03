@@ -2,31 +2,36 @@ const mysql 	= require('mysql2');
 const database 	= require('../config').mysql;
 var ip = require("ip");
 const connectionClass = require('./connection.class')
+const ENV = process.env;
+// const ipList = ['10.129.1.12', '10.129.1.18', '10.129.1.14','192.168.1.12'];
+// const passList = ['asdf1234*', 'P@ss1234**'];
+// const userList = ['root', 'isilabs'];
+// let currentip = ip.address();
+// let ipIndex = ipList.indexOf(currentip);
 
-const ipList = ['10.129.1.12', '10.129.1.18', '10.129.1.14','192.168.1.12'];
-const passList = ['asdf1234*', 'P@ss1234**'];
-const userList = ['root', 'isilabs'];
-let currentip = ip.address();
-let ipIndex = ipList.indexOf(currentip);
+// if (ipIndex === 0) {
+// 	database.host = ipList[0]
+// 	database.user = userList[1];
+// 	database.password = passList[0];
+// } else if (ipIndex === 1) {
+// 	database.host = ipList[1]
+// 	database.user = userList[1];
+// 	database.password = passList[1];
+// }  else if (ipIndex === 2) {
+// 	database.host = ipList[0]
+// 	database.user = userList[1];
+// 	database.password = passList[0];
+// } else  {
+// 	database.host = ipList[3]
+// 	database.user = userList[0];
+// 	database.password = passList[0];
+// }
 
-if (ipIndex === 0) {
-	database.host = ipList[0]
-	database.user = userList[1];
-	database.password = passList[0];
-} else if (ipIndex === 1) {
-	database.host = ipList[1]
-	database.user = userList[1];
-	database.password = passList[1];
-}  else if (ipIndex === 2) {
-	database.host = ipList[0]
-	database.user = userList[1];
-	database.password = passList[0];
-} else  {
-	database.host = ipList[3]
-	database.user = userList[0];
-	database.password = passList[0];
-}
-
+database.host = ENV.DB_HOST
+database.user = ENV.DB_USER;
+database.password = ENV.DB_PASSWORD;
+database.port = ENV.DB_PORT;
+database.database = ENV.DB_DATABASE;
 /**
  * create connection to mysql database
  */
