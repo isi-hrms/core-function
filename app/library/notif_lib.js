@@ -359,7 +359,18 @@ module.exports = async (data, callback) => {
                         };
                     }
                     if (value._type == 5) {
-                        
+                        if (value._local_it == 'local') {
+                            master = 'schedule';
+                            end = {sup: 1, hr: 1, swap: 0, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
+                            arr = {
+                                sup: value.supx,
+                                swap: [],
+                                hr: value.hrx,
+                                supx_comp: value.supx_comp,
+                                hrx_comp: value.hrx_comp,
+                                swapx_comp: []
+                            };
+                        }else{
                             master = 'schedule';
                             end = {sup: 1, hr: 0, swap: 0, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                             arr = {
@@ -370,10 +381,10 @@ module.exports = async (data, callback) => {
                                 hrx_comp: [],
                                 swapx_comp: []
                             };
-                        
+                        }  
                     }
                     if (value._type == 6) {
-                        // if (value._local_it == 'local') {
+                        if (value._local_it == 'local') {
                             //end = {};
                             // end.employee = value._employee_id;
                             // end.requestor_approve = "o";
@@ -386,6 +397,20 @@ module.exports = async (data, callback) => {
                             value.swapx_comp.push('2014888');
                             
                                 master = 'schedule';
+                                end = {...end, swap: 1, sup: 2, hr: 1, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
+                                arr = {
+                                    swap: value.swapx,
+                                    sup: value.supx,
+                                    hr: value.hrx,
+                                    swapx_comp: value.swapx_comp,
+                                    supx_comp: value.supx_comp,
+                                    hrx_comp: value.hrx_comp,
+                                };
+                            
+                        }else{
+                            value.swapx_comp.push('2014888');
+                            
+                                master = 'schedule';
                                 end = {...end, swap: 1, sup: 2, hr: 0, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                                 arr = {
                                     swap: value.swapx,
@@ -395,8 +420,7 @@ module.exports = async (data, callback) => {
                                     supx_comp: value.supx_comp,
                                     hrx_comp: [],
                                 };
-                            
-                        // }
+                        }
                     }
 
                     if (value._type == 7 || value._type == 8 || value._type == 9) {
