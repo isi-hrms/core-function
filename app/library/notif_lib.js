@@ -53,8 +53,7 @@ module.exports = async (data, callback) => {
                         select employee_id from  ldap, role where ldap.role_id = role.role_id and (lower(role.role_name) like '%human%' or  '%human resource%' or '%hr%');`,
                         // [data.idReq],
                         (err, res) => {
-                            // return 
-                            console.log(err, res, 353535)
+                            // return console.log(err, res, 353535)
                             if (err) return next(true, 500);
 
                             return next(null,  {
@@ -105,7 +104,7 @@ module.exports = async (data, callback) => {
 
                         // updated code
                         
-                        if(value._employee_id && value._employee_id !== value._user_login){
+                        if(value._employee_id && value._employee_id !== value._user_login && value._type !== 9){
                             // let cekHR = value.__hrx.findIndex((str)=>{return str.employee_id === value._user_login;});
                             // let cekSPV = value.__supervisorx.findIndex((str)=>{return str.supervisor === value._user_login;});
 
@@ -359,18 +358,7 @@ module.exports = async (data, callback) => {
                         };
                     }
                     if (value._type == 5) {
-                        if (value._local_it == 'local') {
-                            master = 'schedule';
-                            end = {sup: 1, hr: 1, swap: 0, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
-                            arr = {
-                                sup: value.supx,
-                                swap: [],
-                                hr: value.hrx,
-                                supx_comp: value.supx_comp,
-                                hrx_comp: value.hrx_comp,
-                                swapx_comp: []
-                            };
-                        }else{
+                        
                             master = 'schedule';
                             end = {sup: 1, hr: 0, swap: 0, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                             arr = {
@@ -381,10 +369,10 @@ module.exports = async (data, callback) => {
                                 hrx_comp: [],
                                 swapx_comp: []
                             };
-                        }  
+                        
                     }
                     if (value._type == 6) {
-                        if (value._local_it == 'local') {
+                        // if (value._local_it == 'local') {
                             //end = {};
                             // end.employee = value._employee_id;
                             // end.requestor_approve = "o";
@@ -397,20 +385,6 @@ module.exports = async (data, callback) => {
                             value.swapx_comp.push('2014888');
                             
                                 master = 'schedule';
-                                end = {...end, swap: 1, sup: 2, hr: 1, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
-                                arr = {
-                                    swap: value.swapx,
-                                    sup: value.supx,
-                                    hr: value.hrx,
-                                    swapx_comp: value.swapx_comp,
-                                    supx_comp: value.supx_comp,
-                                    hrx_comp: value.hrx_comp,
-                                };
-                            
-                        }else{
-                            value.swapx_comp.push('2014888');
-                            
-                                master = 'schedule';
                                 end = {...end, swap: 1, sup: 2, hr: 0, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                                 arr = {
                                     swap: value.swapx,
@@ -420,10 +394,11 @@ module.exports = async (data, callback) => {
                                     supx_comp: value.supx_comp,
                                     hrx_comp: [],
                                 };
-                        }
+                            
+                        // }
                     }
-
-                    if (value._type == 7 || value._type == 8 || value._type == 9) {
+                    // console.log(arr.hrx_comp, 401)
+                    if (value._type == 7 || value._type == 8) {
                         let index = arr.hrx_comp.findIndex((val) => val == value._employee_id);
                             if(index > -1) {
                                 arr.hrx_comp.splice(index, 1);
@@ -431,6 +406,16 @@ module.exports = async (data, callback) => {
                                 requestor = "employee";
                             }
                     }
+
+                    if (value._type == 9) {
+                        let index = arr.hrx_comp.findIndex((val) => val == value._user_login);
+                            if(index > -1) {
+                                arr.hrx_comp.splice(index, 1);
+                                arr.hr.splice(index, 1);
+                                requestor = value._user_login !== value._employee_id ? "hr" : "employee";
+                            }
+                    }
+                    // console.log(arr.hrx_comp, 410)
                 
                 // updated code
                // return console.log(requestor);
@@ -497,37 +482,49 @@ module.exports = async (data, callback) => {
 
                     });
                 }
+                // console.log(requestor, end,476)
                if(requestor){
                     const cek_approve = end.approver.findIndex((str)=>{ return str.job_approval == requestor.toUpperCase(); });
-                    if(cek_approve > -1){
+                    if(cek_approve > -1 && value._type != 9){
                         end.approver.splice(cek_approve,1);
                     }
                     
                     if(requestor == 'sup'){
                         end.sup_approve = 'x';
                     }else if(requestor == 'hr'){
-                        end.hr_approve = 'x';
+                        if(value._type !== 9){
+                            end.hr_approve = 'o';
+                        }
                     }
 
                     if (requestor.toUpperCase() != "EMPLOYEE") {
-                        end.requestor_approve = 'x';
-                        end.employee_requestor = [ value._user_login, requestor ];
-                        end.employee_dates = null;
-                        end.employee_times = null;
-                        end.employee_approve = 'o';
-                        end.approver.push({
-                            job_approval : 'EMPLOYEE',
-                            name : null,
-                            date : null,
-                            time: null,
-                            status : 'Pending Approval'
-                            
-                        });
+                        if(value._type == 9){
+                            end.requestor_approve = null;
+                            end.employee_requestor = [ value._user_login, requestor ];
+                            end.employee_dates = null;
+                            end.employee_times = null;
+                            end.employee_approve = null;
+                        }else{
+                            end.requestor_approve = 'x';
+                            end.employee_requestor = [ value._user_login, requestor ];
+                            end.employee_dates = null;
+                            end.employee_times = null;
+                            end.employee_approve = 'o';
+                            end.approver.push({
+                                job_approval : 'EMPLOYEE',
+                                name : null,
+                                date : null,
+                                time: null,
+                                status : 'Pending Approval'
+                                
+                            });
+                        }
                     }
                 }
+                // console.log(end, 525)
                 let new_arr = {
                     ...arr,
-                    requestor_stat: {[value._employee_id]: 0},
+                    requestor_stat: {[value._employee_id && value._employee_id !== value._user_login && value._type == 9 ? value._employee_id : value._user_login]: 0},
                     chat_id: [],
                     req_flow: end,
                     master: master,
