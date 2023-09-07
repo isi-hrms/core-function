@@ -135,7 +135,7 @@ module.exports = async (data, callback) => {
                 }
             },
             (value, next) => {
-                // console.log(value.__hrx.length, '=== OKE LUERR');
+                // console.log(value.__hrx.length,value._employee_id, value._user_login, '=== OKE LUERR');
                 // return;
                 // SET HRX
                 let hrx  = [
@@ -380,7 +380,7 @@ module.exports = async (data, callback) => {
                                 hrx_comp: [],
                                 swapx_comp: []
                             };
-                        }
+                        }  
                     }
                     if (value._type == 6) {
                         if (value._local_it == 'local') {
@@ -433,6 +433,7 @@ module.exports = async (data, callback) => {
 
                     if (value._type == 9) {
                         let index = arr.hrx_comp.findIndex((val) => val == value._user_login);
+                        // console.log(requestor,index, value._user_login != value._employee_id, 435)
                             if(index > -1) {
                                 arr.hrx_comp.splice(index, 1);
                                 arr.hr.splice(index, 1);
@@ -442,7 +443,7 @@ module.exports = async (data, callback) => {
                     // console.log(arr.hrx_comp, 410)
                 
                 // updated code
-                // return console.log(requestor);
+            //    return console.log(requestor);
                 end.requestor_approve = null;
                 end.employee_requestor = [];
                 end.employee_dates = '0000-00-00';
@@ -453,7 +454,7 @@ module.exports = async (data, callback) => {
                 const idx1 = arr.hrx_comp.length;
                 const idx2 = arr.supx_comp.length;
                 const idx3 = arr.swapx_comp.length;
-
+                // console.log(idx1, 432)
                 if(idx1 > 0){
                     
                     // if (value._type == 9 && value._local_it == 'expat') {
@@ -545,10 +546,25 @@ module.exports = async (data, callback) => {
                         }
                     }
                 }
-                // console.log(end, 525)
+                // console.log(value._employee_id, value._user_login, value._type, 525)
+                // var req_stat_emp = null;
+                // if(value._employee_id && value._employee_id != value._user_login && value._type == 9){
+                //     console.log(552)
+                //     if(value._type == 9){
+                //         req_stat_emp = [{[value._employee_id]: 0}]
+                //     }else{
+                //         req_stat_emp = [{[value._user_login]: 0}]
+                //     }
+                // // }else if(value._employee_id && value._employee_id != value._user_login && value._type != 9){
+                // //     console.log(559)
+                // //     req_stat_emp = [{[value._employee_id]: 0}]
+                // }else{
+                //     req_stat_emp = [{[value._employee_id]: 0}]
+                // }
+
                 let new_arr = {
                     ...arr,
-                    requestor_stat: {[value._employee_id && value._employee_id !== value._user_login && value._type == 9 ? value._employee_id : value._user_login]: 0},
+                    requestor_stat: [{[value._employee_id]: 0}],
                     chat_id: [],
                     req_flow: end,
                     master: master,
