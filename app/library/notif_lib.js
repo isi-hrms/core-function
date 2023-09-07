@@ -564,7 +564,7 @@ module.exports = async (data, callback) => {
 
                 let new_arr = {
                     ...arr,
-                    requestor_stat: [{[value._employee_id]: 0}],
+                    requestor_stat: {[value._employee_id]: 0},
                     chat_id: [],
                     req_flow: end,
                     master: master,
