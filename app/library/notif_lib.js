@@ -507,8 +507,9 @@ module.exports = async (data, callback) => {
 
                     });
                 }
-                // console.log(requestor, end,476)
-               if(requestor){
+                // console.log(requestor, end, value._type,476)
+                var currentDateTime = new Date()
+                if(requestor){
                     const cek_approve = end.approver.findIndex((str)=>{ return str.job_approval == requestor.toUpperCase(); });
                     if(cek_approve > -1 && value._type != 9){
                         end.approver.splice(cek_approve,1);
@@ -517,18 +518,27 @@ module.exports = async (data, callback) => {
                     if(requestor == 'sup'){
                         end.sup_approve = 'x';
                     }else if(requestor == 'hr'){
-                        if(value._type !== 9){
+                        // console.log(521)
+                        if(value._type == 9){
+                        // console.log(523)
+                            end.hr_approve = 'x';
+                        }else if(value._type == 1 || value._type == 2){
+                            // console.log(523)
+                                end.hr_approve = 'x';
+                                // end.sup_approve = 'x';
+                        }else{
                             end.hr_approve = 'o';
                         }
                     }
 
                     if (requestor.toUpperCase() != "EMPLOYEE") {
-                        if(value._type == 9){
+                        if(requestor == 'hr' && (value._type == 9 || value._type == 1  || value._type == 2)){
                             end.requestor_approve = null;
                             end.employee_requestor = [ value._user_login, requestor ];
-                            end.employee_dates = null;
-                            end.employee_times = null;
+                            end.employee_dates = `${currentDateTime.getFullYear()}-${(currentDateTime.getMonth() + 1 < 10) ? "0"+(currentDateTime.getMonth() + 1) : currentDateTime.getMonth() + 1}-${(currentDateTime.getDate() < 10) ? "0"+currentDateTime.getDate() : currentDateTime.getDate()}`;;
+                            end.employee_times = `${(currentDateTime.getHours() < 10) ? "0"+currentDateTime.getHours() : currentDateTime.getHours()}:${(currentDateTime.getMinutes() < 10) ? "0"+currentDateTime.getMinutes() : currentDateTime.getMinutes()} `;
                             end.employee_approve = null;
+                            end.approver = [];
                         }else{
                             end.requestor_approve = 'x';
                             end.employee_requestor = [ value._user_login, requestor ];
