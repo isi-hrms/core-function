@@ -177,6 +177,19 @@ module.exports = async (data, callback) => {
                                         read_stat: 1,
                                     }
                                 
+                            }else if(requestor == 'sup' && el.employee_id == value._user_login && (value._type == 1 || value._type == 2)){
+                                // console.log(182)
+                                requestor = 'hr';
+                                // const datetime = new Date().toISOString().split('T');
+                                // const dates = datetime[0];
+                                // const times = datetime[1].substring(0,5);
+                                // jsons = {
+                                //     [el.employee_id]: 1,
+                                //     hr_stat: 1,
+                                //     hr_date: dates.split('T')[0],
+                                //     hr_time: times,
+                                //     read_stat: 1,
+                                // }
                             }
                         }
                         hrx.push(jsons);
