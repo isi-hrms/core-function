@@ -177,7 +177,7 @@ module.exports = async (data, callback) => {
                                         read_stat: 1,
                                     }
                                 
-                            }else if(requestor == 'sup' && el.employee_id == value._user_login && (value._type == 1 || value._type == 2)){
+                            }else if(requestor == 'sup' && el.employee_id == value._user_login && (value._type == 1 || value._type == 2 || value._type == 3 || value._type == 4)){
                                 // console.log(182)
                                 requestor = 'hr';
                                 // const datetime = new Date().toISOString().split('T');
@@ -535,7 +535,7 @@ module.exports = async (data, callback) => {
                         if(value._type == 9){
                         // console.log(523)
                             end.hr_approve = 'x';
-                        }else if(value._type == 1 || value._type == 2){
+                        }else if(value._type == 1 || value._type == 2 || value._type == 3 || value._type == 4){
                             // console.log(523)
                                 end.hr_approve = 'x';
                                 // end.sup_approve = 'x';
@@ -545,7 +545,7 @@ module.exports = async (data, callback) => {
                     }
 
                     if (requestor.toUpperCase() != "EMPLOYEE") {
-                        if(requestor == 'hr' && (value._type == 9 || value._type == 1  || value._type == 2)){
+                        if(requestor == 'hr' && (value._type == 9 || value._type == 1  || value._type == 2 || value._type == 3 || value._type == 4)){
                             end.requestor_approve = null;
                             end.employee_requestor = [ value._user_login, requestor ];
                             end.employee_dates = `${currentDateTime.getFullYear()}-${(currentDateTime.getMonth() + 1 < 10) ? "0"+(currentDateTime.getMonth() + 1) : currentDateTime.getMonth() + 1}-${(currentDateTime.getDate() < 10) ? "0"+currentDateTime.getDate() : currentDateTime.getDate()}`;;
