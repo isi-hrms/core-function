@@ -1,6 +1,6 @@
 {
   "name": "@isi-hrms/hrmscorefunction",
-  "version": "0.1.48",
+  "version": "0.1.49",
   "description": "Ini adalah kumpulan beberapa lib untuk hrms\r # Setup : \r ```\r npm i hrms_corefunction\r ```",
   "main": "index.js",
   "scripts": {
