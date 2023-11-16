@@ -436,24 +436,16 @@ module.exports = async (data, callback) => {
                         }
                     }
                     // console.log(arr.hrx_comp, 401)
+                    if (value._type == 7 || value._type == 8) {
+                        let index = arr.hrx_comp.findIndex((val) => val == value._employee_id);
+                            if(index > -1) {
+                                arr.hrx_comp.splice(index, 1);
+                                arr.hr.splice(index, 1);
+                                requestor = "employee";
+                            }
+                    }
 
-                    /**
-                     * UPDATE 16/11/2023 BECAUSE LATE AND EARLY OUT NOW ARE AUTO APPROVED IF HR REQ OTHER THAN THEIR OWN
-                     */
-                    // if (value._type == 7 || value._type == 8) {
-                    //     let index = arr.hrx_comp.findIndex((val) => val == value._employee_id);
-                    //         if(index > -1) {
-                    //             arr.hrx_comp.splice(index, 1);
-                    //             arr.hr.splice(index, 1);
-                    //             requestor = "employee";
-                    //         }
-                    // }
-
-
-                    /**
-                     * UPDATE 16/11/2023 BECAUSE LATE AND EARLY OUT NOW ARE AUTO APPROVED IF HR REQ OTHER THAN THEIR OWN
-                     */
-                    if (value._type == 7 || value._type == 8 || value._type == 9) {
+                    if (value._type == 9) {
                         let index = arr.hrx_comp.findIndex((val) => val == value._user_login);
                         // console.log(requestor,index, value._user_login != value._employee_id, 435)
                             if(index > -1) {
@@ -624,3 +616,4 @@ module.exports = async (data, callback) => {
         });
 	});
 };
+
