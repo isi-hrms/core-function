@@ -878,6 +878,11 @@ module.exports = (types,  param_emp,rangeDt, job, department, localit, callback)
                     'undertime': querys[i].undertime || '-',
                     'undertime_color': querys[i].undertime_color,
                     'ndot_status': querys[i].ndot_status,
+
+                    'before_overtime': querys[i].before_overtime,
+                    'after_overtime': querys[i].after_overtime,
+                    'new_color_overtime_before' :  querys[i].new_color_overtime_before,
+                    'new_color_overtime_after' :  querys[i].new_color_overtime_after,
                 })
             }
             next(null, tmp);
