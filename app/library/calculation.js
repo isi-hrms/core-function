@@ -395,16 +395,16 @@ function calculation_attendance(arr){
     return arr;
 }
 
-module.exports = (types,  param_emp,rangeDt, job, department, localit, callback)=> {
+module.exports = (types, param_emp, employee_id, rangeDt, job, department, batch, localit, callback)=> {
+    console.log(employee_id, department);
     
     async.waterfall([
         (next)=>{
                 if(types == 'cutoff'){
-                    if(!param_emp){
-                        querys = `CALL db_hrms_prod.trial_employee_attendance_record(NULL,NULL,'${rangeDt}',${department},${job},${localit},'CUTOFF')`;
-
+                    if(employee_id && department == 'undefined' || !department){
+                        querys = `CALL db_hrms_prod.trial_employee_attendance_record_multiple('${employee_id}',NULL,'${rangeDt}',NULL,${batch},${localit},'CUTOFF')`;
                     }else{
-                        querys = `CALL db_hrms_prod.trial_employee_attendance_record('${param_emp}',NULL,'${rangeDt}',${department},${job},${localit},'CUTOFF')`;
+                        querys = `CALL db_hrms_prod.trial_employee_attendance_record_multiple(NULL,NULL,'${rangeDt}','${department}',${batch},${localit},'CUTOFF')`;
                     }
                 }else if(types == 'cut-off-record'){
                     if(!param_emp){
@@ -835,6 +835,7 @@ module.exports = (types,  param_emp,rangeDt, job, department, localit, callback)
                 tmp.push({
                     'check_holiday': querys[i].check_holiday,
                     'job': querys[i].job,
+                    'department_parent': querys[i].department_parent,
                     'department': querys[i].department,
                     'department_name': querys[i].department_name,
                     'local_it': querys[i].local_it,
@@ -883,13 +884,6 @@ module.exports = (types,  param_emp,rangeDt, job, department, localit, callback)
                     'after_overtime': querys[i].after_overtime,
                     'new_color_overtime_before' :  querys[i].new_color_overtime_before,
                     'new_color_overtime_after' :  querys[i].new_color_overtime_after,
-
-                    'overtime_str_after' :  querys[i].overtime_str,
-                    'overtime_end_after' :  querys[i].overtime_end,
-                    'overtime_str_before' :  querys[i].overtime_str_before,
-                    'overtime_end_before' :  querys[i].overtime_end_before,
-
-
                 })
             }
             next(null, tmp);

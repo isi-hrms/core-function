@@ -13,7 +13,8 @@ module.exports = (req, callback) => {
 					return next(null, dt)
 				});
 			}else{
-				library.calculation(req.type, req.name, req.dates,req.job,req.department,req.localit,(err, dt)=>{
+				const department = `${req.department}`;
+				library.calculation(req.type, req.name, req.employee_id, req.dates, req.job, department, req.batch, req.localit,(err, dt)=>{
 					//console.log(err,dt, 9090)
 					if(err) return next(err, null)
 
