@@ -884,6 +884,11 @@ module.exports = (types, param_emp, employee_id, rangeDt, job, department, batch
                     'after_overtime': querys[i].after_overtime,
                     'new_color_overtime_before' :  querys[i].new_color_overtime_before,
                     'new_color_overtime_after' :  querys[i].new_color_overtime_after,
+
+                    'overtime_str_after' :  querys[i].overtime_str,
+                    'overtime_end_after' :  querys[i].overtime_end,
+                    'overtime_str_before' :  querys[i].overtime_str_before,
+                    'overtime_end_before' :  querys[i].overtime_end_before,
                 })
             }
             next(null, tmp);
