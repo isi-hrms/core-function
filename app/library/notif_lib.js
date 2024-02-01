@@ -308,13 +308,13 @@ module.exports = async (data, callback) => {
                     if (value._type == 3) {
                         // if (value._local_it == 'local') {
                             master = 'schedule';
-                            end = {sup: 1, swap: '0', hr: '0', hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
+                            end = {sup: 1, swap: '0', hr: 1, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                             arr = {
                                 sup: value.supx,
-                                hr: [],
+                                hr: value.hrx,
                                 swap: [],
                                 supx_comp: value.supx_comp,
-                                hrx_comp: [],
+                                hrx_comp: value.hrx_comp,
                                 swapx_comp: []
                             };
                         // }
@@ -322,13 +322,13 @@ module.exports = async (data, callback) => {
                     if (value._type == 4) {
                         // if (value._local_it == 'local') {
                             master = 'schedule';
-                            end = {sup: 1, swap: '0', hr: '0', hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
+                            end = {sup: 1, swap: '0', hr: 1, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                             arr = {
                                 sup: value.supx,
-                                hr: [],
+                                hr: value.hrx,
                                 swap: [],
                                 supx_comp: value.supx_comp,
-                                hrx_comp: [],
+                                hrx_comp: value.hrx_comp,
                                 swapx_comp: []
                             };
                         // }
@@ -564,12 +564,19 @@ module.exports = async (data, callback) => {
                             end.employee_approve = null;
                             end.approver = [];
                         }else{
-                            end.requestor_approve = 'x';
-                            end.employee_requestor = [ value._user_login, requestor ];
-                            end.employee_dates = null;
-                            end.employee_times = null;
-                            end.employee_approve = 'o';
-                            end.approver.push({
+                            if(value._type == 3 || value._type == 4){
+                                end.requestor_approve = 'x';
+                                end.employee_requestor = [ value._user_login, requestor ];
+                                end.employee_dates = null;
+                                end.employee_times = null;
+                                end.employee_approve = 'o';
+                            } else {
+                                end.requestor_approve = 'x';
+                                end.employee_requestor = [ value._user_login, requestor ];
+                                end.employee_dates = null;
+                                end.employee_times = null;
+                                end.employee_approve = 'o';
+                                end.approver.push({
                                 job_approval : 'EMPLOYEE',
                                 name : null,
                                 date : null,
@@ -580,6 +587,7 @@ module.exports = async (data, callback) => {
                         }
                     }
                 }
+            }
                 // console.log(value._employee_id, value._user_login, value._type, 525)
                 // var req_stat_emp = null;
                 // if(value._employee_id && value._employee_id != value._user_login && value._type == 9){
