@@ -308,13 +308,13 @@ module.exports = async (data, callback) => {
                     if (value._type == 3) {
                         // if (value._local_it == 'local') {
                             master = 'schedule';
-                            end = {sup: 1, swap: '0', hr: 1, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
+                            end = {sup: 1, swap: '0', hr: '0', hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                             arr = {
                                 sup: value.supx,
-                                hr: value.hrx,
+                                hr: [],
                                 swap: [],
                                 supx_comp: value.supx_comp,
-                                hrx_comp: value.hrx_comp,
+                                hrx_comp: [],
                                 swapx_comp: []
                             };
                         // }
@@ -322,13 +322,13 @@ module.exports = async (data, callback) => {
                     if (value._type == 4) {
                         // if (value._local_it == 'local') {
                             master = 'schedule';
-                            end = {sup: 1, swap: '0', hr: 1, hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
+                            end = {sup: 1, swap: '0', hr: '0', hr_approve: 'o', swap_approve: 'o', sup_approve: 'o'};
                             arr = {
                                 sup: value.supx,
-                                hr: value.hrx,
+                                hr: [],
                                 swap: [],
                                 supx_comp: value.supx_comp,
-                                hrx_comp: value.hrx_comp,
+                                hrx_comp: [],
                                 swapx_comp: []
                             };
                         // }
@@ -570,6 +570,17 @@ module.exports = async (data, callback) => {
                                 end.employee_dates = null;
                                 end.employee_times = null;
                                 end.employee_approve = 'o';
+                                end.hr = 1
+                                arr.hrx_comp = value.hrx_comp 
+                                arr.hr = value.hrx 
+
+                                end.approver.push({
+                                    job_approval : 'HR',
+                                    name : null,
+                                    date : null,
+                                    time: null,
+                                    status : 'Pending Approval'
+                                });
                             } else {
                                 end.requestor_approve = 'x';
                                 end.employee_requestor = [ value._user_login, requestor ];
