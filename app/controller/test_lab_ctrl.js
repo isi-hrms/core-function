@@ -43,7 +43,8 @@ module.exports = (req, callback) => {
 					_user: value.user, // user
 					_from_type: value.from_type, // attendance
 					_swap: value.swap, // jika type 6 makan value swap adalah employee_id swap
-					_user_login : value.user_login || null // employee_id user login
+					_user_login : value.user_login || null, // employee_id user login
+					_check : value.check // check if role auto approve is true or false
 				};
 				// console.log(val, '==== SIAPPPPPPP');
 				

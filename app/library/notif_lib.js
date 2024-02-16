@@ -30,7 +30,6 @@ module.exports = async (data, callback) => {
                         hr: [],
                         ...data
                     };
-
                     
                     // const _check_su = await database.Promise.query3(`select  * from  view_nonactive_login where employee_id  =  '${val._employee_id}'  and lower(role_name) =   'superuser'  `);
                     // const _supervisorx = await database.query3(`select * from emp_supervisor where employee_id =  '${val._employee_id}' `);
@@ -64,6 +63,7 @@ module.exports = async (data, callback) => {
                                 __hrx: res[3],
                                 // __adminx: _adminx[0],
                                 __subx: [],
+                                check: data.check,
                             })    
                     })
                     // console.log(_check_su, _supervisorx, _emp_x, _hrx, val._employee_id, 48, )
@@ -127,7 +127,7 @@ module.exports = async (data, callback) => {
                         
                         supx_comp.push(el.supervisor);
                         if (value.__supervisorx.length == (index + 1)) {
-                            return next(null, { ...value, supx: supx, supx_comp: supx_comp });
+                            return next(null, { ...value, supx: supx, supx_comp: supx_comp});
                         }
                     });
                 } else {
@@ -553,9 +553,9 @@ module.exports = async (data, callback) => {
                             end.hr_approve = 'o';
                         }
                     }
-
                     if (requestor.toUpperCase() != "EMPLOYEE") {
-                        if(requestor == 'hr' && (value._type == 9 || value._type == 1 || value._type == 2 || value._type == 3 
+                        // if(requestor == 'hr' && (value._type == 9 || value._type == 1 || value._type == 2 || value._type == 3 
+                        if(value._check == true && (value._type == 9 || value._type == 1 || value._type == 2 || value._type == 3 
                             || value._type == 4 || value._type == 5 || value._type == 6 || value._type == 7 || value._type == 8)){
                             end.requestor_approve = null;
                             end.employee_requestor = [ value._user_login, requestor ];
@@ -625,9 +625,7 @@ module.exports = async (data, callback) => {
                 };
                 
                 
-                
                 let jsonData = JSON.stringify(new_arr);
-                
 
                 return next(null, {...value, jsonData});
             },
