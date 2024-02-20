@@ -461,6 +461,11 @@ module.exports = async (data, callback) => {
                                 arr.hr.splice(index, 1);
                                 requestor = value._user_login != value._employee_id ? "hr" : "employee";
                             }
+
+                            if(requestor == 'hr'){
+                                arr.sup = value.supx
+                                arr.supx_comp = value.supx_comp
+                            }
                     }
                     // console.log(arr.hrx_comp, 410)
                 
@@ -533,7 +538,7 @@ module.exports = async (data, callback) => {
                 var currentDateTime = new Date()
                 if(requestor){
                     const cek_approve = end.approver.findIndex((str)=>{ return str.job_approval == requestor.toUpperCase(); });
-                    if(cek_approve > -1 && value._type != 9){
+                    if(cek_approve > -1 && value._type >= 1 && value._type <= 9){
                         end.approver.splice(cek_approve,1);
                     }
                     
@@ -564,7 +569,8 @@ module.exports = async (data, callback) => {
                             end.employee_approve = null;
                             end.approver = [];
                         }else{
-                            if(value._type == 3 || value._type == 4){
+                            // if(value._type == 3 || value._type == 4){
+                            if(requestor == 'sup' && value._type == 3 || value._type == 4){
                                 end.requestor_approve = 'x';
                                 end.employee_requestor = [ value._user_login, requestor ];
                                 end.employee_dates = null;
