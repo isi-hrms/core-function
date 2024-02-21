@@ -461,6 +461,11 @@ module.exports = async (data, callback) => {
                                 arr.hr.splice(index, 1);
                                 requestor = value._user_login != value._employee_id ? "hr" : "employee";
                             }
+
+                            if(requestor == 'hr'){
+                                arr.sup = value.supx
+                                arr.supx_comp = value.supx_comp
+                            }
                     }
                     // console.log(arr.hrx_comp, 410)
                 
