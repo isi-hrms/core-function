@@ -889,6 +889,9 @@ module.exports = (types, param_emp, employee_id, rangeDt, job, department, batch
                     'overtime_end_after' :  querys[i].overtime_end,
                     'overtime_str_before' :  querys[i].overtime_str_before,
                     'overtime_end_before' :  querys[i].overtime_end_before,
+
+                    'date_in' :  querys[i].date_in,
+                    'date_out' :  querys[i].date_out,
                 })
             }
             next(null, tmp);
