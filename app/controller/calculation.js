@@ -14,7 +14,20 @@ module.exports = (req, callback) => {
 				});
 			}else{
 				const department = `${req.department}`;
-				library.calculation(req.type, req.name, req.employee_id, req.dates, req.job, department, req.batch, req.localit,(err, dt)=>{
+				const subDepartment = `${req.sub_department}`;
+
+				let paramDepartment = {
+					department 		 : department,
+					sub_department : subDepartment
+				};
+
+				if(req.sub_department == null || req.sub_department == undefined) {
+					paramDepartment = {
+						department : department
+					};
+				};
+
+				library.calculation(req.type, req.name, req.employee_id, req.dates, req.job, paramDepartment, req.batch, req.localit,(err, dt)=>{
 					//console.log(err,dt, 9090)
 					if(err) return next(err, null)
 

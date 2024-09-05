@@ -396,22 +396,21 @@ function calculation_attendance(arr){
 }
 
 module.exports = (types, param_emp, employee_id, rangeDt, job, department, batch, localit, callback)=> {
-    console.log(employee_id, department);
+    console.log(employee_id, department, "param");
     
     async.waterfall([
         (next)=>{
                 if(types == 'cutoff'){
-                    if(employee_id && department == 'undefined' || !department){
-                        querys = `CALL db_hrms_prod.trial_employee_attendance_record_multiple('${employee_id}',NULL,'${rangeDt}',NULL,${batch},${localit},'CUTOFF')`;
+                    if(employee_id && department.department == 'null' || !department.department){
+                        querys = `CALL db_hrms_prod.trial_employee_attendance_record_multiple('${employee_id}',NULL,'${rangeDt}',NULL, NULL, ${batch},${localit},'CUTOFF')`;
                     }else{
-                        querys = `CALL db_hrms_prod.trial_employee_attendance_record_multiple(NULL,NULL,'${rangeDt}','${department}',${batch},${localit},'CUTOFF')`;
+                        querys = `CALL db_hrms_prod.trial_employee_attendance_record_multiple(NULL,NULL,'${rangeDt}','${department.department}','${department.sub_department}',${batch},${localit},'CUTOFF')`;
                     }
                 }else if(types == 'cut-off-record'){
                     if(!param_emp){
-
-                        querys = `CALL db_hrms_prod.trial_employee_attendance_record(NULL,NULL,'${rangeDt}',${department},${job},${localit},'CUTOFF')`;
+                        querys = `CALL db_hrms_prod.trial_employee_attendance_record(NULL,NULL,'${rangeDt}',${!department.department},${job},${localit},'CUTOFF')`;
                     }else{
-                        querys = `CALL db_hrms_prod.trial_employee_attendance_record('${param_emp}',NULL,'${rangeDt}',${department},${job},${localit},'CUTOFF')`;
+                        querys = `CALL db_hrms_prod.trial_employee_attendance_record('${param_emp}',NULL,'${rangeDt}',${!department.department},${job},${localit},'CUTOFF')`;
                         
                     }
                 }else if(types == `attendance`){
@@ -419,10 +418,10 @@ module.exports = (types, param_emp, employee_id, rangeDt, job, department, batch
                 }else if(types == "perday"){
                     querys = `CALL db_hrms_prod.trial_employee_attendance_record('${param_emp}','${rangeDt}',NULL,NULL,NULL,NULL,'ATTENDANCE')`;
                 }
-                //console.log(querys, 7777);
+                console.log(querys, 7777);
                 database.query2(querys, (err, result)=>{
                     if(err) return next(true, err)
-                    
+
                     if(result[0].length == 0){
                         next(true, 'Data is Empty');
                     }else{
